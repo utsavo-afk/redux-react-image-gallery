@@ -1,22 +1,31 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { mockFetchData } from '@src/api';
 
 import data from '../data.json';
 
 interface RootState {
-	categories: string[];
+	categories: null | string[];
 	activeTab: string | undefined;
 	search: string | undefined;
-	activeData: Array<{ image: string; text: string }> | null;
+	activeData: null | Array<{ image: string; text: string }>;
 	opacity: number;
+	loading: boolean;
 }
 
 const initialState: RootState = {
-	categories: Object.keys(data),
+	categories: null,
 	activeTab: '',
 	search: '',
 	activeData: null,
 	opacity: 1.0,
+	loading: true,
 };
+
+//  async thun to get data from data.json
+export const fetchApiData = createAsyncThunk('/fetch-data', async () => {
+	const response = await mockFetchData();
+	return response.data;
+});
 
 export const rootSlice = createSlice({
 	name: 'apiData',
@@ -37,6 +46,12 @@ export const rootSlice = createSlice({
 		setOpacity: (state, action: PayloadAction<number>) => {
 			if (action.payload >= 0 && action.payload <= 1) state.opacity = action.payload;
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(fetchApiData.fulfilled, (state, action) => {
+			state.categories = Object.keys(action.payload);
+			state.loading = false;
+		});
 	},
 });
 
