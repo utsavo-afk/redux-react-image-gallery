@@ -9,8 +9,14 @@ import { fetchApiData } from './reducers/rootReducer';
 import { RootState } from './store';
 
 const App = () => {
+	// state
 	const rootState = useSelector((state: RootState) => state.rootState);
 	const loading = useSelector((state: RootState) => state.rootState.loading);
+	const searchVal = useSelector((state: RootState) => state.rootState.search);
+	const categories = useSelector((state: RootState) => state.rootState.categories);
+	const opacity = useSelector((state: RootState) => state.rootState.opacity);
+	const data = useSelector((state: RootState) => state.rootState.activeData);
+	const activeTab = useSelector((state: RootState) => state.rootState.activeTab);
 	const dispatch = useDispatch();
 
 	console.log(rootState);
@@ -18,6 +24,7 @@ const App = () => {
 	useEffect(() => {
 		dispatch(fetchApiData());
 	}, []);
+
 	return (
 		<Container fluid>
 			{loading ? (
@@ -29,15 +36,15 @@ const App = () => {
 				<>
 					<Row>
 						<Col className="p-3 border border-dark">
-							<SearchBar />
+							<SearchBar searchVal={searchVal} />
 						</Col>
 					</Row>
 					<Row className="vh-100">
 						<Col xs={4} className="border border-top-0 border-dark">
-							<SideMenu />
+							<SideMenu categories={categories} opacity={opacity} />
 						</Col>
 						<Col>
-							<ImageGrid />
+							<ImageGrid data={data} activeTab={activeTab} search={searchVal} />
 						</Col>
 					</Row>
 				</>

@@ -4,23 +4,24 @@ import {
 	setOpacity,
 	setSearchVal,
 } from '@src/reducers/rootReducer';
-import { RootState } from '@src/store';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { Form, ListGroup } from 'react-bootstrap';
 import RangeSlider from 'react-bootstrap-range-slider';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-const SideMenu = () => {
-	const categories = useSelector((state: RootState) => state.rootState.categories);
-	const opacityVal = useSelector((state: RootState) => state.rootState.opacity);
+interface SideMenuProps {
+	categories: string[] | null;
+	opacity: number;
+}
 
+const SideMenu = ({ categories, opacity }: SideMenuProps) => {
 	const dispatch = useDispatch();
 	return (
 		<>
 			<ListGroup variant="flush">
 				{!isEmpty(categories) &&
-					categories.map((c, idx) => (
+					categories?.map((c, idx) => (
 						<ListGroup.Item
 							action
 							onClick={() => {
@@ -39,7 +40,7 @@ const SideMenu = () => {
 				<Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 					<RangeSlider
 						size="sm"
-						value={opacityVal}
+						value={opacity}
 						max={1.0}
 						min={0.0}
 						step={0.01}
@@ -52,7 +53,7 @@ const SideMenu = () => {
 						size="sm"
 						type="number"
 						placeholder="opacity"
-						value={opacityVal}
+						value={opacity}
 						onChange={(changeEvent) =>
 							dispatch(setOpacity(Number(changeEvent.target.value)))
 						}
