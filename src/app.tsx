@@ -1,25 +1,20 @@
 import React, { useEffect } from 'react';
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ImageGrid from './components/ImageGrid/ImageGrid';
+import Loader from './components/Loader/Loader';
 import SearchBar from './components/SearchBar/SearchBar';
 import SideMenu from './components/SideMenu/SideMenu';
 import { fetchApiData } from './reducers/rootReducer';
 import { RootState } from './store';
 
 const App = () => {
-	// state
-	const rootState = useSelector((state: RootState) => state.rootState);
-	const loading = useSelector((state: RootState) => state.rootState.loading);
-	const searchVal = useSelector((state: RootState) => state.rootState.search);
-	const categories = useSelector((state: RootState) => state.rootState.categories);
-	const opacity = useSelector((state: RootState) => state.rootState.opacity);
-	const data = useSelector((state: RootState) => state.rootState.activeData);
-	const activeTab = useSelector((state: RootState) => state.rootState.activeTab);
+	// destructure from root state
+	const { loading, search, categories, opacity, activeData } = useSelector(
+		(state: RootState) => state.rootState,
+	);
 	const dispatch = useDispatch();
-
-	console.log(rootState);
 
 	useEffect(() => {
 		dispatch(fetchApiData());
@@ -28,15 +23,12 @@ const App = () => {
 	return (
 		<Container fluid>
 			{loading ? (
-				<div className="d-flex vh-100 justify-content-center align-items-center">
-					<Spinner animation="grow" variant="primary" />
-					<p>Loading...</p>
-				</div>
+				<Loader />
 			) : (
 				<>
 					<Row>
 						<Col className="p-3 border border-dark">
-							<SearchBar searchVal={searchVal} />
+							<SearchBar search={search} />
 						</Col>
 					</Row>
 					<Row className="vh-100">
@@ -44,7 +36,7 @@ const App = () => {
 							<SideMenu categories={categories} opacity={opacity} />
 						</Col>
 						<Col>
-							<ImageGrid data={data} activeTab={activeTab} search={searchVal} />
+							<ImageGrid data={activeData} search={search} />
 						</Col>
 					</Row>
 				</>

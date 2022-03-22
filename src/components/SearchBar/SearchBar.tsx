@@ -1,13 +1,13 @@
-import { setActiveTab, setSearchVal } from '@src/reducers/rootReducer';
+import { setSearchVal } from '@src/reducers/rootReducer';
 import React from 'react';
 import { Form, FormControl } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 interface SearchBarProps {
-	searchVal: string | undefined;
+	search: string | undefined;
 }
 
-const SearchBar = ({ searchVal: search }: SearchBarProps) => {
+const SearchBar = ({ search }: SearchBarProps) => {
 	const dispatch = useDispatch();
 	return (
 		<Form className="d-flex">
@@ -20,7 +20,6 @@ const SearchBar = ({ searchVal: search }: SearchBarProps) => {
 				value={search}
 				onChange={(changeEvent) => {
 					dispatch(setSearchVal(String(changeEvent.target.value)));
-					dispatch(setActiveTab(String(changeEvent.target.value)));
 				}}
 			/>
 		</Form>

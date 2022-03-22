@@ -37,7 +37,7 @@ export const rootSlice = createSlice({
 		},
 		// search will set a search string
 		setSearchVal: (state, action: PayloadAction<string>) => {
-			if (action.payload) state.search = action.payload;
+			state.search = action.payload;
 		},
 		// active data will set the images
 		setActiveData: (state, action: PayloadAction<string>) => {
@@ -50,6 +50,8 @@ export const rootSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(fetchApiData.fulfilled, (state, action) => {
 			state.categories = Object.keys(action.payload);
+			state.activeTab = state.categories[0]; // set to 0th index of categories
+			state.activeData = action.payload[state.activeTab]; // bracket notation to access key:value pair
 			state.loading = false;
 		});
 	},

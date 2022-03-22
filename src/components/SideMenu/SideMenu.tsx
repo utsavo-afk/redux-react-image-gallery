@@ -1,9 +1,4 @@
-import {
-	setActiveData,
-	setActiveTab,
-	setOpacity,
-	setSearchVal,
-} from '@src/reducers/rootReducer';
+import { setActiveData, setActiveTab, setOpacity } from '@src/reducers/rootReducer';
 import { isEmpty } from 'lodash';
 import React from 'react';
 import { Form, ListGroup } from 'react-bootstrap';
@@ -27,7 +22,6 @@ const SideMenu = ({ categories, opacity }: SideMenuProps) => {
 							onClick={() => {
 								dispatch(setActiveTab(c));
 								dispatch(setActiveData(c));
-								dispatch(setSearchVal(c));
 							}}
 							key={idx}
 						>
@@ -54,9 +48,10 @@ const SideMenu = ({ categories, opacity }: SideMenuProps) => {
 						type="number"
 						placeholder="opacity"
 						value={opacity}
-						onChange={(changeEvent) =>
-							dispatch(setOpacity(Number(changeEvent.target.value)))
-						}
+						onChange={(changeEvent) => {
+							if (opacity >= 0.0 || opacity <= 1.0)
+								dispatch(setOpacity(Number(changeEvent.target.value)));
+						}}
 					/>
 				</Form.Group>
 			</Form>
