@@ -1,6 +1,6 @@
 import { RootState } from '@src/store';
 import { activeData } from '@src/typings';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ interface ListProps {
 const List = ({ data }: ListProps) => {
 	return (
 		<>
+			{isEmpty(data) && <p>No items found</p>}
 			{map(data, ({ image, text }, idx) => (
 				<ListItem key={idx} image={image} text={text} index={idx} />
 			))}
@@ -31,7 +32,11 @@ const ListItem = ({ image, text, index }: ListItemProps) => {
 	return (
 		<Col key={index}>
 			<Card>
-				<Card.Img variant="top" src={image} style={{ opacity: opacity }} />
+				<Card.Img
+					variant="top"
+					src={image}
+					style={{ opacity: opacity, objectFit: 'cover' }}
+				/>
 				<Card.Body>
 					<Card.Text>{text}</Card.Text>
 				</Card.Body>

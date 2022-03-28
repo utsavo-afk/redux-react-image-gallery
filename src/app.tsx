@@ -11,7 +11,7 @@ import { RootState } from './store';
 
 const App = () => {
 	// destructure from root state
-	const { loading, search, categories, opacity, activeData } = useSelector(
+	const { loading, search, categories, opacity, activeData, activeTab } = useSelector(
 		(state: RootState) => state.rootState,
 	);
 	const dispatch = useDispatch();
@@ -33,7 +33,11 @@ const App = () => {
 					</Row>
 					<Row className="vh-100">
 						<Col xs={4} className="border border-top-0 border-dark">
-							<SideMenu categories={categories} opacity={opacity} />
+							<SideMenu
+								categories={categories}
+								opacity={opacity}
+								currentTab={activeTab}
+							/>
 						</Col>
 						<Col>
 							<ImageGrid data={activeData} search={search} />

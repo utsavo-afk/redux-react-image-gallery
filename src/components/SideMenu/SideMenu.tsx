@@ -8,15 +8,16 @@ import { useDispatch } from 'react-redux';
 interface SideMenuProps {
 	categories: string[] | null;
 	opacity: number;
+	currentTab: string | undefined;
 }
 
-const SideMenu = ({ categories, opacity }: SideMenuProps) => {
+const SideMenu = ({ categories, opacity, currentTab }: SideMenuProps) => {
 	const dispatch = useDispatch();
 	return (
 		<>
 			<ListGroup variant="flush">
 				{!isEmpty(categories) &&
-					categories?.map((c, idx) => (
+					categories?.map((c, idx, arr) => (
 						<ListGroup.Item
 							action
 							onClick={() => {
@@ -24,6 +25,7 @@ const SideMenu = ({ categories, opacity }: SideMenuProps) => {
 								dispatch(setActiveData(c));
 							}}
 							key={idx}
+							active={currentTab === arr[idx] ? true : false}
 						>
 							{c}
 						</ListGroup.Item>
